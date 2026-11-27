@@ -54,13 +54,12 @@ club-rugby/
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/<usuario>/club-rugby.git
+git clone https://github.com/lologoni/club-rugby.git
 cd club-rugby
 
 # 2. Variables de entorno
 cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
-# Completar los valores (base de datos, JWT, credenciales de prueba de Mercado Pago)
+# Los valores de la base ya coinciden con docker-compose.yml; completar JWT_SECRET y Mercado Pago
 
 # 3. Levantar la base de datos
 docker compose up -d
@@ -78,7 +77,29 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-> Los comandos `migrate` y `seed` pueden cambiar según la herramienta de migraciones que se elija; se actualizan acá cuando quede definida.
+Para comprobar que la API anda: `curl http://localhost:3000/api/health` devuelve `{"status":"ok"}`.
+
+### Base de datos (Knex)
+
+Usamos [Knex](https://knexjs.org) para migraciones, seeds y consultas. La conexión se importa desde `backend/src/db/knex.js`. Las migraciones y los seeds viven en `/database`, y los comandos se corren desde `backend/`:
+
+| Comando | Qué hace |
+| --- | --- |
+| `npm run migrate` | Aplica las migraciones pendientes |
+| `npm run migrate:rollback` | Deshace el último lote |
+| `npm run migrate:make -- nombre` | Crea una migración nueva en `database/migrations` |
+| `npm run seed` | Carga los datos de prueba de `database/seeds` |
+| `npm run seed:make -- nombre` | Crea un seed nuevo |
+
+Para empezar de cero: `docker compose down -v && docker compose up -d`, y después `migrate` y `seed`.
+
+### Tests y estilo
+
+Desde `backend/`: `npm test` (Jest + Supertest), `npm run lint` (ESLint) y `npm run format` (Prettier). El CI de GitHub Actions corre lint, migraciones y tests en cada PR a `develop` y `main`.
+
+### Errores en la API
+
+Todas las respuestas de error tienen la forma `{ "error": "mensaje" }` (y `details` si hay errores de validación). Desde un controlador alcanza con `throw new HttpError(400, 'mensaje')` (de `src/middlewares/errorHandler.js`); Express 5 captura también los errores de funciones `async`.
 
 ## Forma de trabajo
 

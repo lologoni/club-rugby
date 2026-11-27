@@ -147,3 +147,15 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Configuración local de editores y asistentes
+.vscode/
+.idea/
+CLAUDE.md
+.claude/
+.cursor/
+.cursorrules
+.aider*
+.copilot*
+.github/copilot-instructions.md
+

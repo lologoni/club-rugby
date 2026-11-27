@@ -146,9 +146,20 @@ const NACIMIENTO = {
   M15: [2011, 2012],
 };
 
-const MOROSOS = ['Joaquín Méndez', 'Felipe Castro', 'Nahuel Benítez', 'Franco Medina', 'Valentín Rojas'];
+const MOROSOS = [
+  'Joaquín Méndez',
+  'Felipe Castro',
+  'Nahuel Benítez',
+  'Franco Medina',
+  'Valentín Rojas',
+];
 const EXCEPTUADOS = {
-  'Mateo Fernández': { tipo: 'BECA', fecha_inicio: '2026-03-01', fecha_fin: null, observacion: 'Beca deportiva' },
+  'Mateo Fernández': {
+    tipo: 'BECA',
+    fecha_inicio: '2026-03-01',
+    fecha_fin: null,
+    observacion: 'Beca deportiva',
+  },
   'Agustín Herrera': {
     tipo: 'COLABORACION',
     fecha_inicio: '2026-11-01',
@@ -312,7 +323,8 @@ exports.seed = async (knex) => {
         .returning('id');
 
       if (pagada) {
-        const metodo = periodo >= '2026-10' ? 'MERCADO_PAGO' : rnd.elegir(['EFECTIVO', 'TRANSFERENCIA']);
+        const metodo =
+          periodo >= '2026-10' ? 'MERCADO_PAGO' : rnd.elegir(['EFECTIVO', 'TRANSFERENCIA']);
         await knex('pagos').insert({
           cuota_id: cuota.id,
           fecha: `${fechaPago}T15:00:00-03:00`,
@@ -356,7 +368,10 @@ exports.seed = async (knex) => {
     for (const [i, fecha] of fechas.entries()) {
       const jugado = i < fechas.length - 1;
       const condicion = !jugado || i % 2 === 0 ? 'LOCAL' : 'VISITANTE';
-      const rival = division === 'Plantel Superior' && !jugado ? 'CUBA' : RIVALES[(i * 5 + division.length) % RIVALES.length];
+      const rival =
+        division === 'Plantel Superior' && !jugado
+          ? 'CUBA'
+          : RIVALES[(i * 5 + division.length) % RIVALES.length];
       const [p] = await knex('partidos')
         .insert({
           division_id: divisionId[division],
@@ -413,9 +428,30 @@ exports.seed = async (knex) => {
     for (const fecha of tomas) {
       const registrado_por = j.division === 'M17' ? entrenador2Id : entrenadorId;
       testeos.push(
-        { jugador_id: j.id, registrado_por, tipo: 'VELOCIDAD_40M', valor: velocidad.toFixed(2), unidad: 'seg', fecha },
-        { jugador_id: j.id, registrado_por, tipo: 'FUERZA_MAXIMA', valor: fuerza.toFixed(1), unidad: 'kg', fecha },
-        { jugador_id: j.id, registrado_por, tipo: 'RESISTENCIA', valor: resistencia.toFixed(1), unidad: 'ml/kg', fecha },
+        {
+          jugador_id: j.id,
+          registrado_por,
+          tipo: 'VELOCIDAD_40M',
+          valor: velocidad.toFixed(2),
+          unidad: 'seg',
+          fecha,
+        },
+        {
+          jugador_id: j.id,
+          registrado_por,
+          tipo: 'FUERZA_MAXIMA',
+          valor: fuerza.toFixed(1),
+          unidad: 'kg',
+          fecha,
+        },
+        {
+          jugador_id: j.id,
+          registrado_por,
+          tipo: 'RESISTENCIA',
+          valor: resistencia.toFixed(1),
+          unidad: 'ml/kg',
+          fecha,
+        },
       );
       velocidad -= rnd() * 0.12;
       fuerza += rnd() * 6;
@@ -515,7 +551,9 @@ exports.seed = async (knex) => {
         cantidad_devuelta: devuelta ?? null,
       });
       if (prestamo.estado === 'ACTIVO') {
-        await knex('materiales').where({ id: materialId[nombre] }).decrement('stock_disponible', prestada);
+        await knex('materiales')
+          .where({ id: materialId[nombre] })
+          .decrement('stock_disponible', prestada);
       } else if (devuelta < prestada) {
         // Lo perdido o roto se da de baja del total.
         await knex('materiales')

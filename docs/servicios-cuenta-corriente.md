@@ -46,11 +46,11 @@ Lo usa el webhook de Mercado Pago. También sirve para pagos manuales del tesore
 ```js
 await registrarPago(cuotaId, {
   monto: 15000,
-  metodoPago: 'MERCADO_PAGO',       // 'MERCADO_PAGO' | 'EFECTIVO' | 'TRANSFERENCIA'
-  estadoTransaccion: 'APROBADO',    // 'APROBADO' | 'RECHAZADO' | 'PENDIENTE'
-  idTransaccionMp: '1300000123',    // obligatorio con MERCADO_PAGO
+  metodoPago: 'MERCADO_PAGO', // 'MERCADO_PAGO' | 'EFECTIVO' | 'TRANSFERENCIA'
+  estadoTransaccion: 'APROBADO', // 'APROBADO' | 'RECHAZADO' | 'PENDIENTE'
+  idTransaccionMp: '1300000123', // obligatorio con MERCADO_PAGO
   fecha: '2026-11-29T18:00:00-03:00', // opcional, por defecto ahora
-  registradoPor: 1,                 // opcional, id del tesorero en pagos manuales
+  registradoPor: 1, // opcional, id del tesorero en pagos manuales
 });
 ```
 
@@ -73,12 +73,12 @@ Comportamiento:
 
 Errores (`HttpError`, los maneja el `errorHandler`):
 
-| Código | Cuándo |
-| --- | --- |
-| 400 | Monto, método o estado inválidos, o falta `idTransaccionMp` con Mercado Pago |
-| 404 | La cuota no existe |
-| 409 | La cuota ya tiene otro pago aprobado |
-| 422 | El monto no coincide con el de la cuota |
+| Código | Cuándo                                                                       |
+| ------ | ---------------------------------------------------------------------------- |
+| 400    | Monto, método o estado inválidos, o falta `idTransaccionMp` con Mercado Pago |
+| 404    | La cuota no existe                                                           |
+| 409    | La cuota ya tiene otro pago aprobado                                         |
+| 422    | El monto no coincide con el de la cuota                                      |
 
 ## Datos fijos hasta el domingo 29/11
 

@@ -43,8 +43,7 @@ async function obtenerEstadoFinanciero(socioId) {
     etiqueta: ETIQUETAS[estado],
     deuda: estado === 'AL_DIA' ? 0 : 15000,
     cuotasVencidas: estado === 'AL_DIA' ? 0 : 1,
-    excepcionVigente:
-      estado === 'EXCEPTUADO' ? { id: 1, tipo: 'BECA', fechaFin: null } : null,
+    excepcionVigente: estado === 'EXCEPTUADO' ? { id: 1, tipo: 'BECA', fechaFin: null } : null,
   };
 }
 
